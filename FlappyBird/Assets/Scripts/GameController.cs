@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] BirdController m_Bird;
+    [SerializeField] float m_ScreenWidth;
+    [SerializeField] float m_ScreenHeight;
+
+    [SerializeField] List<BlockController> m_Blocks;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -14,5 +20,9 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         
+    }
+
+    private void SpawnBlock()
+    {
     }
 }

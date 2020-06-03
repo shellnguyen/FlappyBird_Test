@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BirdController : MonoBehaviour
 {
+    public Camera MainCamera; //be sure to assign this in the inspector to your main camera
+    [SerializeField] private Vector2 m_ScreenBounds;
+
     [SerializeField] private SpriteRenderer m_Renderer;
     [SerializeField] private Vector3 m_Position;
     [SerializeField] private bool m_IsAlive;
@@ -13,9 +16,17 @@ public class BirdController : MonoBehaviour
     [SerializeField] private float m_PositionY;
     [SerializeField] private float m_Gravity;
 
+    [SerializeField] private float m_Width;
+    [SerializeField] private float m_Height;
+
     // Start is called before the first frame update
     private void Start()
     {
+        m_ScreenBounds = MainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, MainCamera.transform.position.z));
+        m_Renderer = GetComponent<SpriteRenderer>();
+        m_Width = m_Renderer.bounds.extents.x;
+        m_Height = m_Renderer.bounds.extents.y;
+
         m_Position = transform.position;
         m_PositionY = transform.position.y;
     }
@@ -42,6 +53,13 @@ public class BirdController : MonoBehaviour
         m_PositionY += m_Velocity * Time.deltaTime;
 
         m_Position.y = m_PositionY;
+        transform.position = m_Position;
+    }
+
+    private void LateUpdate()
+    {
+        m_Position.x = Mathf.Clamp(m_Position.x, m_ScreenBounds.x * -1 + m_Width, m_ScreenBounds.x - m_Width);
+        m_Position.y = Mathf.Clamp(m_Position.y, m_ScreenBounds.y * -1 + m_Height, m_ScreenBounds.y - m_Height);
         transform.position = m_Position;
     }
 }
