@@ -58,3 +58,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+FlappyBird/Library/
+FlappyBird/Temp/
+FlappyBird/obj/
+FlappyBird/Logs/
