@@ -729,12 +729,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0377680229910ff40a97abecbefae432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IsStart: 0
+  m_IsStart: 1
   m_Bird: {fileID: 692523491}
   m_ScreenWidth: 0
   m_ScreenHeight: 0
   m_Blocks: []
   m_BlockPrefab: {fileID: 3929912797167319823, guid: edc6f977c0deeab4686452c487e6a7c8,
+    type: 3}
+  m_Gaps: []
+  m_GapPrefab: {fileID: 2042229465124150638, guid: 93ee14fc4f822ed40ae4729644cf89d2,
     type: 3}
   m_SpawnPoint: {fileID: 353105382}
   m_TopEdgeY: 5

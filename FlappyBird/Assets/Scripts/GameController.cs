@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private List<BlockController> m_Blocks;
     [SerializeField] private GameObject m_BlockPrefab;
+
+    [SerializeField] private List<Gap> m_Gaps;
+    [SerializeField] private GameObject m_GapPrefab;
     [SerializeField] private GameObject m_SpawnPoint;
 
     //[SerializeField] private Li
@@ -28,6 +31,8 @@ public class GameController : MonoBehaviour
     {
         m_IsStart = false;
         m_Time = Time.time;
+        m_Blocks = new List<BlockController>();
+        m_Gaps = new List<Gap>();
     }
 
     // Update is called once per frame
@@ -67,6 +72,13 @@ public class GameController : MonoBehaviour
         BlockController bottomBlockScript = bottomBlock.GetComponent<BlockController>();
         bottomBlockScript.SetSize(bottomHeight);
         m_Blocks.Add(bottomBlockScript);
+
+        //Spawn Gap
+        GameObject gap = Instantiate(m_GapPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
+        gap.transform.Translate(0.0f, topBlock.transform.position.y - BLOCK_YOFFSET - (gapHeight / 4), 0.0f);
+        Gap gapScript = gap.GetComponent<Gap>();
+        gapScript.SetHeight(gapHeight);
+        m_Gaps.Add(gapScript);
         m_Time = Time.time;
     }
 
@@ -81,6 +93,11 @@ public class GameController : MonoBehaviour
                 Debug.Log("Death - " + m_Blocks[i].name);
                 return true;
             }
+        }
+
+        for(int i = 0; i < m_Gaps.Count; ++i)
+        {
+
         }
 
         return false;
