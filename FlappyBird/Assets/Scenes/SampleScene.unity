@@ -230,7 +230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 353105383}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -725,6 +725,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1576104821}
+  - component: {fileID: 1576104822}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -746,3 +747,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1576104822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576104820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0377680229910ff40a97abecbefae432, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsStart: 0
+  m_Bird: {fileID: 692523491}
+  m_ScreenWidth: 0
+  m_ScreenHeight: 0
+  m_Blocks: []
+  m_BlockPrefab: {fileID: 3929912797167319823, guid: edc6f977c0deeab4686452c487e6a7c8,
+    type: 3}
+  m_SpawnPoint: {fileID: 353105382}
+  m_TopEdge: {x: 0, y: 5, z: 0}
+  m_BottomEdge: {x: 0, y: -5, z: 0}
+  m_Time: 0

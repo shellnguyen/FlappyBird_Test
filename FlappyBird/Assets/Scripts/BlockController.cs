@@ -12,7 +12,7 @@ public class BlockController : MonoBehaviour
     // Start is called before the first frame update
     private void OnEnable()
     {
-        BuildBlock();
+        //BuildBlock();
     }
 
     // Update is called once per frame
@@ -27,8 +27,14 @@ public class BlockController : MonoBehaviour
         Vector3 position = transform.position;
         for(int i = 0; i < blocksToSpawn; ++i)
         {
-            position.y =  (float)i;
-            Instantiate(SingleBlock, position, Quaternion.identity, transform);
+            Instantiate(SingleBlock, transform).transform.position = position;
+            position.y += 1.0f;
         }
+    }
+
+    public void SetSize(float height)
+    {
+        m_Height = height;
+        BuildBlock();
     }
 }
