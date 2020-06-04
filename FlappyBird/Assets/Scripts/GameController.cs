@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -26,13 +27,19 @@ public class GameController : MonoBehaviour
     [SerializeField] private float m_BottomEdgeY;
     [SerializeField] private float m_Time;
 
+    [SerializeField] private TextMeshProUGUI m_ScoreText;
+    [SerializeField] private int m_Score;
+
     // Start is called before the first frame update
     private void Start()
     {
-        m_IsStart = false;
+        m_IsStart = true;
+        m_Score = 0;
         m_Time = Time.time;
         m_Blocks = new List<BlockController>();
         m_Gaps = new List<Gap>();
+
+        StartCoroutine(CheckCollision());
     }
 
     // Update is called once per frame
@@ -42,8 +49,6 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-
-        CheckCollision();
 
         if(m_Blocks.Count < 20 && (Time.time - m_Time) > 8.0f)
         {
@@ -82,24 +87,69 @@ public class GameController : MonoBehaviour
         m_Time = Time.time;
     }
 
-    private bool CheckCollision()
+    //private bool CheckCollision()
+    //{
+    //    for(int i = 0; i < m_Blocks.Count; ++i)
+    //    {
+    //        //TODO: tweak Bird yOffset to suitable number. Need more testing
+    //        float x = Mathf.Pow(m_Blocks[i].transform.position.x - m_Bird.transform.position.x, 2);
+    //        if (x <= 1 && ((m_Bird.transform.position.y + BIRD_YOFFSET) >= (m_Blocks[i].transform.position.y - BLOCK_YOFFSET) && (m_Bird.transform.position.y - BIRD_YOFFSET) <= ((m_Blocks[i].transform.position.y - BLOCK_YOFFSET) + (m_Blocks[i].Height / 2))) )
+    //        {
+    //            Debug.Log("Death - " + m_Blocks[i].name);
+    //            return true;
+    //        }
+    //    }
+
+    //    for(int i = 0; i < m_Gaps.Count; ++i)
+    //    {
+    //        float x = Mathf.Pow(m_Gaps[i].transform.position.x - m_Bird.transform.position.x, 2);
+    //        float y = Mathf.Pow(m_Gaps[i].transform.position.y - m_Bird.transform.position.y, 2);
+
+    //        if ( x <= 0.25f && y <= (m_Gaps[i].Height / 4))
+    //        {
+    //            //Debug.Log("Score - Gap[" + i + "]");
+    //            m_Score++;
+    //            m_ScoreText.text = m_Score.ToString();
+    //            return true;
+    //        }
+    //    }
+
+    //    return false;
+    //}
+
+    private IEnumerator CheckCollision()
     {
-        for(int i = 0; i < m_Blocks.Count; ++i)
+        while(m_IsStart)
         {
-            //TODO: tweak Bird yOffset to suitable number. Need more testing
-            float x = Mathf.Pow(m_Blocks[i].transform.position.x - m_Bird.transform.position.x, 2);
-            if (x <= 1 && ((m_Bird.transform.position.y + BIRD_YOFFSET) >= (m_Blocks[i].transform.position.y - BLOCK_YOFFSET) && (m_Bird.transform.position.y - BIRD_YOFFSET) <= ((m_Blocks[i].transform.position.y - BLOCK_YOFFSET) + (m_Blocks[i].Height / 2))) )
+            for (int i = 0; i < m_Blocks.Count; ++i)
             {
-                Debug.Log("Death - " + m_Blocks[i].name);
-                return true;
+                //TODO: tweak Bird yOffset to suitable number. Need more testing
+                float x = Mathf.Pow(m_Blocks[i].transform.position.x - m_Bird.transform.position.x, 2);
+                if (x <= 1 && ((m_Bird.transform.position.y + BIRD_YOFFSET) >= (m_Blocks[i].transform.position.y - BLOCK_YOFFSET) && (m_Bird.transform.position.y - BIRD_YOFFSET) <= ((m_Blocks[i].transform.position.y - BLOCK_YOFFSET) + (m_Blocks[i].Height / 2))))
+                {
+                    Debug.Log("Death - " + m_Blocks[i].name);
+                    yield return new WaitForSeconds(0.3f);
+                }
             }
+
+            for (int i = 0; i < m_Gaps.Count; ++i)
+            {
+                float x = Mathf.Pow(m_Gaps[i].transform.position.x - m_Bird.transform.position.x, 2);
+                float y = Mathf.Pow(m_Gaps[i].transform.position.y - m_Bird.transform.position.y, 2);
+
+                if (x <= 0.25f && y <= (m_Gaps[i].Height / 4))
+                {
+                    //Debug.Log("Score - Gap[" + i + "]");
+                    m_Score++;
+                    m_ScoreText.text = m_Score.ToString();
+                    yield return new WaitForSeconds(0.3f);
+                }
+            }
+
+            yield return new WaitForSeconds(0.3f);
         }
 
-        for(int i = 0; i < m_Gaps.Count; ++i)
-        {
 
-        }
-
-        return false;
+        yield break;
     }
 }
