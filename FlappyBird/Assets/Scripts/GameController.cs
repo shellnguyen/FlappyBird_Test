@@ -16,8 +16,8 @@ public class GameController : MonoBehaviour
 
     //[SerializeField] private Li
 
-    [SerializeField] private Vector3 m_TopEdge;
-    [SerializeField] private Vector3 m_BottomEdge;
+    [SerializeField] private float m_TopEdgeY;
+    [SerializeField] private float m_BottomEdgeY;
     [SerializeField] private float m_Time;
 
     // Start is called before the first frame update
@@ -44,19 +44,19 @@ public class GameController : MonoBehaviour
     private void SpawnBlock()
     {
         float topHeight = Random.Range(1, 6) * 2;
-        float gapHeight = Random.Range(3, 5) * 2;
-        float bottomHeight = 20 - topHeight - gapHeight;
+        float gapHeight = Random.Range(2, 5) * 2;
+        float bottomHeight = 20.0f - topHeight - gapHeight;
 
         //Spawn Top
         GameObject topBlock = Instantiate(m_BlockPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
-        topBlock.transform.position = new Vector3(m_SpawnPoint.transform.position.x, m_TopEdge.y - (topHeight / 2) + 0.5f, 0.0f);
+        topBlock.transform.Translate(0.0f, m_TopEdgeY - (topHeight / 2) + 0.5f, 0.0f);
         BlockController topBlockScripts = topBlock.GetComponent<BlockController>();
         topBlockScripts.SetSize(topHeight);
         m_Blocks.Add(topBlockScripts);
 
         //Spawn Down
         GameObject bottomBlock = Instantiate(m_BlockPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
-        bottomBlock.transform.position = new Vector3(m_SpawnPoint.transform.position.x, m_BottomEdge.y + 0.5f, 0.0f);
+        bottomBlock.transform.Translate(0.0f, m_BottomEdgeY + 0.5f, 0.0f);
         BlockController bottomBlockScript = bottomBlock.GetComponent<BlockController>();
         bottomBlockScript.SetSize(bottomHeight);
         m_Blocks.Add(bottomBlockScript);
