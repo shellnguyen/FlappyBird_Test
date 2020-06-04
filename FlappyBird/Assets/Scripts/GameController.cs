@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    private const float BLOCK_YOFFSET = 0.5f;
+    private const float BIRD_YOFFSET = 0.4f;
+
     [SerializeField] private bool m_IsStart;
 
     [SerializeField] private BirdController m_Bird;
@@ -35,6 +38,8 @@ public class GameController : MonoBehaviour
             return;
         }
 
+        CheckCollision();
+
         if(m_Blocks.Count < 20 && (Time.time - m_Time) > 8.0f)
         {
             SpawnBlock();
@@ -49,17 +54,35 @@ public class GameController : MonoBehaviour
 
         //Spawn Top
         GameObject topBlock = Instantiate(m_BlockPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
-        topBlock.transform.Translate(0.0f, m_TopEdgeY - (topHeight / 2) + 0.5f, 0.0f);
+        topBlock.name = "TopBlock";
+        topBlock.transform.Translate(0.0f, m_TopEdgeY - (topHeight / 2) + BLOCK_YOFFSET, 0.0f);
         BlockController topBlockScripts = topBlock.GetComponent<BlockController>();
         topBlockScripts.SetSize(topHeight);
         m_Blocks.Add(topBlockScripts);
 
         //Spawn Down
         GameObject bottomBlock = Instantiate(m_BlockPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
-        bottomBlock.transform.Translate(0.0f, m_BottomEdgeY + 0.5f, 0.0f);
+        bottomBlock.name = "BottomBlock";
+        bottomBlock.transform.Translate(0.0f, m_BottomEdgeY + BLOCK_YOFFSET, 0.0f);
         BlockController bottomBlockScript = bottomBlock.GetComponent<BlockController>();
         bottomBlockScript.SetSize(bottomHeight);
         m_Blocks.Add(bottomBlockScript);
         m_Time = Time.time;
+    }
+
+    private bool CheckCollision()
+    {
+        for(int i = 0; i < m_Blocks.Count; ++i)
+        {
+            //TODO: tweak Bird yOffset to suitable number. Need more testing
+            float x = Mathf.Pow(m_Blocks[i].transform.position.x - m_Bird.transform.position.x, 2);
+            if (x <= 1 && ((m_Bird.transform.position.y + BIRD_YOFFSET) >= (m_Blocks[i].transform.position.y - BLOCK_YOFFSET) && (m_Bird.transform.position.y - BIRD_YOFFSET) <= ((m_Blocks[i].transform.position.y - BLOCK_YOFFSET) + (m_Blocks[i].Height / 2))) )
+            {
+                Debug.Log("Death - " + m_Blocks[i].name);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

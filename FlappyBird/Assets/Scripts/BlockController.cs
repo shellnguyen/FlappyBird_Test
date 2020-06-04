@@ -9,6 +9,14 @@ public class BlockController : MonoBehaviour
     [SerializeField] private float m_Height;
     [SerializeField] private float m_MoveSpeed;
 
+    public float Height
+    {
+        get
+        {
+            return m_Height;
+        }
+    }
+
     // Start is called before the first frame update
     private void OnEnable()
     {
