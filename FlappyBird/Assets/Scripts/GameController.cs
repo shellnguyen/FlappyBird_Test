@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     private const float BIRD_YOFFSET = 0.4f;
 
     [SerializeField] private Camera m_MainCamera;
+    [SerializeField] private Vector2 m_ScreenBounds;
     [SerializeField] private bool m_IsStart;
 
     [SerializeField] private BirdController m_Bird;
@@ -45,8 +46,8 @@ public class GameController : MonoBehaviour
 
         float xHeight = m_Floor.GetComponent<SpriteRenderer>().bounds.extents.y;
 
-        Vector2 screenBounds = m_MainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height - (xHeight * 100), m_MainCamera.transform.position.z));
-        m_Bird.SetScreenBounds(screenBounds);
+        m_ScreenBounds = m_MainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, m_MainCamera.transform.position.z));
+        m_Bird.SetScreenBounds(m_ScreenBounds, xHeight);
         StartCoroutine(CheckCollision());
     }
 

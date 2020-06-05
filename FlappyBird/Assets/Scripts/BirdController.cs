@@ -5,6 +5,7 @@ using UnityEngine;
 public class BirdController : MonoBehaviour
 {
     [SerializeField] private Vector2 m_ScreenBounds;
+    [SerializeField] private float m_YFloorSize;
 
     [SerializeField] private SpriteRenderer m_Renderer;
     [SerializeField] private Vector3 m_Position;
@@ -58,12 +59,13 @@ public class BirdController : MonoBehaviour
     private void LateUpdate()
     {
         m_Position.x = Mathf.Clamp(m_Position.x, m_ScreenBounds.x * -1 + m_Width, m_ScreenBounds.x - m_Width);
-        m_Position.y = Mathf.Clamp(m_Position.y, m_ScreenBounds.y * -1 + m_Height, m_ScreenBounds.y - m_Height);
+        m_Position.y = Mathf.Clamp(m_Position.y, m_ScreenBounds.y * -1 + m_Height + m_YFloorSize, m_ScreenBounds.y - m_Height);
         transform.position = m_Position;
     }
 
-    public void SetScreenBounds(Vector2 bounds)
+    public void SetScreenBounds(Vector2 bounds, float yFloorSize)
     {
         m_ScreenBounds = bounds;
+        m_YFloorSize = yFloorSize;
     }
 }
