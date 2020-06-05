@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
     private const float BLOCK_YOFFSET = 0.5f;
     private const float BIRD_YOFFSET = 0.4f;
 
+    [SerializeField] private Camera m_MainCamera;
     [SerializeField] private bool m_IsStart;
 
     [SerializeField] private BirdController m_Bird;
@@ -41,6 +42,11 @@ public class GameController : MonoBehaviour
         m_Blocks = new List<BlockController>();
         m_Gaps = new List<Gap>();
 
+
+        float xHeight = m_Floor.GetComponent<SpriteRenderer>().bounds.extents.y;
+
+        Vector2 screenBounds = m_MainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height - (xHeight * 100), m_MainCamera.transform.position.z));
+        m_Bird.SetScreenBounds(screenBounds);
         StartCoroutine(CheckCollision());
     }
 
@@ -93,8 +99,14 @@ public class GameController : MonoBehaviour
     {
         while(m_IsStart)
         {
-            
+            //Check Floor
+            float distance = Mathf.Pow(m_Floor.transform.position.y - m_Bird.transform.position.y, 2);
+            if(distance <= 1.5f)
+            {
+                Debug.Log("Drop death");
+            }
 
+            //Check Blocks
             for (int i = 0; i < m_Blocks.Count; ++i)
             {
                 //TODO: tweak Bird yOffset to suitable number. Need more testing
@@ -106,6 +118,7 @@ public class GameController : MonoBehaviour
                 }
             }
 
+            //Check Gaps
             for (int i = 0; i < m_Gaps.Count; ++i)
             {
                 float x = Mathf.Pow(m_Gaps[i].transform.position.x - m_Bird.transform.position.x, 2);
@@ -114,8 +127,8 @@ public class GameController : MonoBehaviour
                 if (x <= 0.25f && y <= (m_Gaps[i].Height / 4))
                 {
                     //Debug.Log("Score - Gap[" + i + "]");
-                    m_Score++;
-                    m_ScoreText.text = m_Score.ToString();
+                    //m_Score++;
+                    //m_ScoreText.text = m_Score.ToString();
                     yield return new WaitForSeconds(0.3f);
                 }
             }
@@ -126,16 +139,4 @@ public class GameController : MonoBehaviour
 
         yield break;
     }
-
-    //private bool CheckCollision(GameObject one, GameObject two) // AABB - AABB collision
-    //{
-    //    //// collision x-axis?
-    //    //bool collisionX = one.transform.position.x + one.x >= two.Position.x &&
-    //    //    two.Position.x + two.Size.x >= one.Position.x;
-    //    //// collision y-axis?
-    //    //bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
-    //    //    two.Position.y + two.Size.y >= one.Position.y;
-    //    //// collision only if on both axes
-    //    //return collisionX && collisionY;
-    //}
 }
