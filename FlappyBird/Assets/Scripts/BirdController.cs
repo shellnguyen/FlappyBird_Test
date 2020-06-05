@@ -7,6 +7,9 @@ public class BirdController : MonoBehaviour
     [SerializeField] private Vector2 m_ScreenBounds;
     [SerializeField] private float m_YFloorSize;
 
+    [SerializeField] private Animator m_Animator;
+    [SerializeField] private int m_HitTypeParamId;
+
     [SerializeField] private SpriteRenderer m_Renderer;
     [SerializeField] private Vector3 m_Position;
     [SerializeField] private bool m_IsAlive;
@@ -22,7 +25,11 @@ public class BirdController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        //m_ScreenBounds = MainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height - 90, MainCamera.transform.position.z));
+        m_IsAlive = true;
+
+        m_Animator = GetComponent<Animator>();
+        m_HitTypeParamId = Animator.StringToHash("HitType");
+
         m_Renderer = GetComponent<SpriteRenderer>();
         m_Width = m_Renderer.bounds.extents.x;
         m_Height = m_Renderer.bounds.extents.y;
@@ -67,5 +74,11 @@ public class BirdController : MonoBehaviour
     {
         m_ScreenBounds = bounds;
         m_YFloorSize = yFloorSize;
+    }
+
+    public void Hit(int hitType)
+    {
+        m_IsAlive = false;
+        m_Animator.SetInteger(m_HitTypeParamId, hitType);
     }
 }

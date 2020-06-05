@@ -100,13 +100,6 @@ public class GameController : MonoBehaviour
     {
         while(m_IsStart)
         {
-            //Check Floor
-            float distance = Mathf.Pow(m_Floor.transform.position.y - m_Bird.transform.position.y, 2);
-            if(distance <= 1.5f)
-            {
-                Debug.Log("Drop death");
-            }
-
             //Check Blocks
             for (int i = 0; i < m_Blocks.Count; ++i)
             {
@@ -115,7 +108,8 @@ public class GameController : MonoBehaviour
                 if (x <= 1 && ((m_Bird.transform.position.y + BIRD_YOFFSET) >= (m_Blocks[i].transform.position.y - BLOCK_YOFFSET) && (m_Bird.transform.position.y - BIRD_YOFFSET) <= ((m_Blocks[i].transform.position.y - BLOCK_YOFFSET) + (m_Blocks[i].Height / 2))))
                 {
                     Debug.Log("Death - " + m_Blocks[i].name);
-                    yield return new WaitForSeconds(0.3f);
+                    m_Bird.Hit(1);
+                    break;
                 }
             }
 
@@ -130,8 +124,17 @@ public class GameController : MonoBehaviour
                     //Debug.Log("Score - Gap[" + i + "]");
                     //m_Score++;
                     //m_ScoreText.text = m_Score.ToString();
-                    yield return new WaitForSeconds(0.3f);
+                    break;
                 }
+            }
+
+            //Check Floor
+            float distance = Mathf.Pow(m_Floor.transform.position.y - m_Bird.transform.position.y, 2);
+            if (distance <= 1.5f)
+            {
+                Debug.Log("Drop death");
+                m_Bird.Hit(2);
+                //yield return new WaitForSeconds(0.3f);
             }
 
             yield return new WaitForSeconds(0.3f);
