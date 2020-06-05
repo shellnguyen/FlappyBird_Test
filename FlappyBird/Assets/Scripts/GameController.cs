@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private float m_BottomEdgeY;
     [SerializeField] private float m_Time;
 
+    [SerializeField] private GameObject m_Floor;
+
     [SerializeField] private TextMeshProUGUI m_ScoreText;
     [SerializeField] private int m_Score;
 
@@ -82,45 +84,17 @@ public class GameController : MonoBehaviour
         GameObject gap = Instantiate(m_GapPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
         gap.transform.Translate(0.0f, topBlock.transform.position.y - BLOCK_YOFFSET - (gapHeight / 4), 0.0f);
         Gap gapScript = gap.GetComponent<Gap>();
-        gapScript.SetHeight(gapHeight);
+        gapScript.SetSize(gapHeight);
         m_Gaps.Add(gapScript);
         m_Time = Time.time;
     }
-
-    //private bool CheckCollision()
-    //{
-    //    for(int i = 0; i < m_Blocks.Count; ++i)
-    //    {
-    //        //TODO: tweak Bird yOffset to suitable number. Need more testing
-    //        float x = Mathf.Pow(m_Blocks[i].transform.position.x - m_Bird.transform.position.x, 2);
-    //        if (x <= 1 && ((m_Bird.transform.position.y + BIRD_YOFFSET) >= (m_Blocks[i].transform.position.y - BLOCK_YOFFSET) && (m_Bird.transform.position.y - BIRD_YOFFSET) <= ((m_Blocks[i].transform.position.y - BLOCK_YOFFSET) + (m_Blocks[i].Height / 2))) )
-    //        {
-    //            Debug.Log("Death - " + m_Blocks[i].name);
-    //            return true;
-    //        }
-    //    }
-
-    //    for(int i = 0; i < m_Gaps.Count; ++i)
-    //    {
-    //        float x = Mathf.Pow(m_Gaps[i].transform.position.x - m_Bird.transform.position.x, 2);
-    //        float y = Mathf.Pow(m_Gaps[i].transform.position.y - m_Bird.transform.position.y, 2);
-
-    //        if ( x <= 0.25f && y <= (m_Gaps[i].Height / 4))
-    //        {
-    //            //Debug.Log("Score - Gap[" + i + "]");
-    //            m_Score++;
-    //            m_ScoreText.text = m_Score.ToString();
-    //            return true;
-    //        }
-    //    }
-
-    //    return false;
-    //}
 
     private IEnumerator CheckCollision()
     {
         while(m_IsStart)
         {
+            
+
             for (int i = 0; i < m_Blocks.Count; ++i)
             {
                 //TODO: tweak Bird yOffset to suitable number. Need more testing
@@ -152,4 +126,16 @@ public class GameController : MonoBehaviour
 
         yield break;
     }
+
+    //private bool CheckCollision(GameObject one, GameObject two) // AABB - AABB collision
+    //{
+    //    //// collision x-axis?
+    //    //bool collisionX = one.transform.position.x + one.x >= two.Position.x &&
+    //    //    two.Position.x + two.Size.x >= one.Position.x;
+    //    //// collision y-axis?
+    //    //bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
+    //    //    two.Position.y + two.Size.y >= one.Position.y;
+    //    //// collision only if on both axes
+    //    //return collisionX && collisionY;
+    //}
 }

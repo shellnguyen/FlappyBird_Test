@@ -2,26 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gap : MonoBehaviour
+public class Gap : Obstacle
 {
-    [SerializeField] private float m_Height;
-    [SerializeField] private float m_MoveSpeed;
+    //[SerializeField] private float m_Height;
+    //[SerializeField] private float m_MoveSpeed;
 
-    public float Height
-    {
-        get
-        {
-            return m_Height;
-        }
-    }
-
-    public void SetHeight(float height)
-    {
-        m_Height = height;
-    }
+    //public float Height
+    //{
+    //    get
+    //    {
+    //        return m_Height;
+    //    }
+    //}
 
     private void Update()
     {
-        transform.position += Vector3.left * m_MoveSpeed * Time.deltaTime;
+        Move();
     }
 }
