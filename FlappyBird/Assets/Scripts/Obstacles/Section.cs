@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Section : MonoBehaviour
+public class Section : MonoBehaviour, IObjectPool
 {
     private const float BLOCK_YOFFSET = 0.5f;
     private const float BIRD_YOFFSET = 0.4f;
@@ -14,7 +14,7 @@ public class Section : MonoBehaviour
     [SerializeField] private Gap m_Gap;
     [SerializeField] private BlockController m_BottomBlock;
 
-    [SerializeField] protected float m_MoveSpeed;
+    [SerializeField] private float m_MoveSpeed;
 
     // Start is called before the first frame update
     private void Start()
@@ -47,12 +47,7 @@ public class Section : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Move();
-
-        if (transform.position.x < -(GameSetting.Instance.screenBounds.x + 1.0f))
-        {
-            //Debug.Log("Move out of screen");
-        }
+        OnUpdate();
     }
 
     private void Move()
@@ -90,5 +85,21 @@ public class Section : MonoBehaviour
         //
 
         return 0;
+    }
+
+    public void OnUpdate()
+    {
+        Move();
+
+        if (transform.position.x < -(GameSetting.Instance.screenBounds.x + 1.0f))
+        {
+            //Debug.Log("Move out of screen");
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void OnReuse()
+    {
+        
     }
 }

@@ -22,7 +22,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject m_SectionPrefab;
 
     //[SerializeField] private Li
-    [SerializeField] private float m_Time;
+    [SerializeField] private float m_TimeBlock;
+    [SerializeField] private float m_TimeCloud;
 
     [SerializeField] private GameObject m_Floor;
 
@@ -32,6 +33,7 @@ public class GameController : MonoBehaviour
     private void OnEnable()
     {
         m_GameSetting = GameSetting.Instance;
+        PoolController.Instance.Initialize(m_SpawnPoint.transform.position);
     }
 
     // Start is called before the first frame update
@@ -39,7 +41,8 @@ public class GameController : MonoBehaviour
     {
         m_IsStart = true;
         m_Score = 0;
-        m_Time = Time.time;
+        m_TimeBlock = Time.time;
+        m_TimeCloud = Time.time;
         m_Sections = new List<Section>();
 
 
@@ -51,25 +54,37 @@ public class GameController : MonoBehaviour
         StartCoroutine(CheckCollision());
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
-        if(!m_IsStart)
+        if (!m_IsStart)
         {
             return;
         }
 
-        if(m_Sections.Count < 20 && (Time.time - m_Time) > 8.0f)
+        if (m_Sections.Count < 15 && (Time.time - m_TimeBlock) > 8.0f)
         {
             SpawnBlock();
+        }
+
+        if(Time.time - m_TimeCloud > 4.0f)
+        {
+            SpawnClound();
         }
     }
 
     private void SpawnBlock()
     {
-        GameObject section = Instantiate(m_SectionPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
-        m_Sections.Add(section.GetComponent<Section>());
-        m_Time = Time.time;
+        //GameObject section = Instantiate(m_SectionPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
+        //m_Sections.Add(section.GetComponent<Section>());
+        m_Sections.Add(PoolController.Instance.Get("section", m_SpawnPoint.transform.position, Quaternion.identity).GetComponent<Section>());
+        m_TimeBlock = Time.time;
+    }
+
+    private void SpawnClound()
+    {
+        IObjectPool cloudScript = PoolController.Instance.Get("cloud", m_SpawnPoint.transform.position, Quaternion.identity).GetComponent<IObjectPool>();
+        cloudScript.OnReuse();
+        m_TimeCloud = Time.time;
     }
 
     private IEnumerator CheckCollision()
@@ -79,6 +94,11 @@ public class GameController : MonoBehaviour
             //Check collide with anything in section
             for(int i = 0; i < m_Sections.Count; ++i)
             {
+                if(!m_Sections[i].enabled)
+                {
+                    continue;
+                }
+
                 int result = m_Sections[i].IsCollide(m_Bird.transform);
                 if(result == 1)
                 {

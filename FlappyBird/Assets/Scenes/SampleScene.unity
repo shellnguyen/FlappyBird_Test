@@ -811,6 +811,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1443027415
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1443027417}
+  - component: {fileID: 1443027416}
+  m_Layer: 0
+  m_Name: PoolController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1443027416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443027415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983c7bea3821dba418dcf8592e500586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ListObjects:
+  - tag: section
+    prefab: {fileID: 1097753832622170418, guid: f7c51b6649bdc4e419546369d77d65a6,
+      type: 3}
+    size: 15
+  - tag: cloud
+    prefab: {fileID: 4040280718351676636, guid: 5d26eb73793565143af42d0cc5e4d678,
+      type: 3}
+    size: 10
+--- !u!4 &1443027417
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443027415}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1457928550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,19 +1075,12 @@ MonoBehaviour:
   m_ScreenBounds: {x: 0, y: 0}
   m_IsStart: 1
   m_Bird: {fileID: 692523491}
-  m_ScreenWidth: 0
-  m_ScreenHeight: 0
-  m_Blocks: []
-  m_BlockPrefab: {fileID: 3929912797167319823, guid: edc6f977c0deeab4686452c487e6a7c8,
-    type: 3}
-  m_Gaps: []
-  m_GapPrefab: {fileID: 2042229465124150638, guid: 93ee14fc4f822ed40ae4729644cf89d2,
-    type: 3}
   m_SpawnPoint: {fileID: 353105382}
   m_Sections: []
   m_SectionPrefab: {fileID: 1097753832622170418, guid: f7c51b6649bdc4e419546369d77d65a6,
     type: 3}
-  m_Time: 0
+  m_TimeBlock: 0
+  m_TimeCloud: 0
   m_Floor: {fileID: 2065776236}
   m_ScoreText: {fileID: 0}
   m_Score: 0
