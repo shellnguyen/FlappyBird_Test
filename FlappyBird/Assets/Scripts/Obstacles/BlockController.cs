@@ -6,28 +6,6 @@ public class BlockController : Obstacle
 {
     [SerializeField] private GameObject SingleBlock;
     [SerializeField] private float m_SingleBlockHeight;
-    //[SerializeField] private float m_Height;
-    //[SerializeField] private float m_MoveSpeed;
-
-    //public float Height
-    //{
-    //    get
-    //    {
-    //        return m_Height;
-    //    }
-    //}
-
-    // Start is called before the first frame update
-    private void OnEnable()
-    {
-        //BuildBlock();
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        Move();
-    }
 
     private void BuildBlock()
     {

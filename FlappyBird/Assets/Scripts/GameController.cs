@@ -8,25 +8,20 @@ public class GameController : MonoBehaviour
     private const float BLOCK_YOFFSET = 0.5f;
     private const float BIRD_YOFFSET = 0.4f;
 
+    [SerializeField] private GameSetting m_GameSetting;
+
     [SerializeField] private Camera m_MainCamera;
     [SerializeField] private Vector2 m_ScreenBounds;
     [SerializeField] private bool m_IsStart;
 
     [SerializeField] private BirdController m_Bird;
-    [SerializeField] private float m_ScreenWidth;
-    [SerializeField] private float m_ScreenHeight;
 
-    [SerializeField] private List<BlockController> m_Blocks;
-    [SerializeField] private GameObject m_BlockPrefab;
-
-    [SerializeField] private List<Gap> m_Gaps;
-    [SerializeField] private GameObject m_GapPrefab;
     [SerializeField] private GameObject m_SpawnPoint;
 
-    //[SerializeField] private Li
+    [SerializeField] private List<Section> m_Sections;
+    [SerializeField] private GameObject m_SectionPrefab;
 
-    [SerializeField] private float m_TopEdgeY;
-    [SerializeField] private float m_BottomEdgeY;
+    //[SerializeField] private Li
     [SerializeField] private float m_Time;
 
     [SerializeField] private GameObject m_Floor;
@@ -34,19 +29,24 @@ public class GameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_ScoreText;
     [SerializeField] private int m_Score;
 
+    private void OnEnable()
+    {
+        m_GameSetting = GameSetting.Instance;
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
         m_IsStart = true;
         m_Score = 0;
         m_Time = Time.time;
-        m_Blocks = new List<BlockController>();
-        m_Gaps = new List<Gap>();
+        m_Sections = new List<Section>();
 
 
         float xHeight = m_Floor.GetComponent<SpriteRenderer>().bounds.extents.y;
 
         m_ScreenBounds = m_MainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, m_MainCamera.transform.position.z));
+        m_GameSetting.screenBounds = m_ScreenBounds;
         m_Bird.SetScreenBounds(m_ScreenBounds, xHeight);
         StartCoroutine(CheckCollision());
     }
@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        if(m_Blocks.Count < 20 && (Time.time - m_Time) > 8.0f)
+        if(m_Sections.Count < 20 && (Time.time - m_Time) > 8.0f)
         {
             SpawnBlock();
         }
@@ -67,32 +67,8 @@ public class GameController : MonoBehaviour
 
     private void SpawnBlock()
     {
-        float topHeight = Random.Range(1, 6) * 2;
-        float gapHeight = Random.Range(2, 5) * 2;
-        float bottomHeight = 20.0f - topHeight - gapHeight;
-
-        //Spawn Top
-        GameObject topBlock = Instantiate(m_BlockPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
-        topBlock.name = "TopBlock";
-        topBlock.transform.Translate(0.0f, m_TopEdgeY - (topHeight / 2) + BLOCK_YOFFSET, 0.0f);
-        BlockController topBlockScripts = topBlock.GetComponent<BlockController>();
-        topBlockScripts.SetSize(topHeight);
-        m_Blocks.Add(topBlockScripts);
-
-        //Spawn Down
-        GameObject bottomBlock = Instantiate(m_BlockPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
-        bottomBlock.name = "BottomBlock";
-        bottomBlock.transform.Translate(0.0f, m_BottomEdgeY + BLOCK_YOFFSET, 0.0f);
-        BlockController bottomBlockScript = bottomBlock.GetComponent<BlockController>();
-        bottomBlockScript.SetSize(bottomHeight);
-        m_Blocks.Add(bottomBlockScript);
-
-        //Spawn Gap
-        GameObject gap = Instantiate(m_GapPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
-        gap.transform.Translate(0.0f, topBlock.transform.position.y - BLOCK_YOFFSET - (gapHeight / 4), 0.0f);
-        Gap gapScript = gap.GetComponent<Gap>();
-        gapScript.SetSize(gapHeight);
-        m_Gaps.Add(gapScript);
+        GameObject section = Instantiate(m_SectionPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
+        m_Sections.Add(section.GetComponent<Section>());
         m_Time = Time.time;
     }
 
@@ -100,30 +76,20 @@ public class GameController : MonoBehaviour
     {
         while(m_IsStart)
         {
-            //Check Blocks
-            for (int i = 0; i < m_Blocks.Count; ++i)
+            //Check collide with anything in section
+            for(int i = 0; i < m_Sections.Count; ++i)
             {
-                //TODO: tweak Bird yOffset to suitable number. Need more testing
-                float x = Mathf.Pow(m_Blocks[i].transform.position.x - m_Bird.transform.position.x, 2);
-                if (x <= 1 && ((m_Bird.transform.position.y + BIRD_YOFFSET) >= (m_Blocks[i].transform.position.y - BLOCK_YOFFSET) && (m_Bird.transform.position.y - BIRD_YOFFSET) <= ((m_Blocks[i].transform.position.y - BLOCK_YOFFSET) + (m_Blocks[i].Height / 2))))
+                int result = m_Sections[i].IsCollide(m_Bird.transform);
+                if(result == 1)
                 {
-                    Debug.Log("Death - " + m_Blocks[i].name);
-                    m_Bird.Hit(1);
+                    Debug.Log("score !!!");
                     break;
                 }
-            }
 
-            //Check Gaps
-            for (int i = 0; i < m_Gaps.Count; ++i)
-            {
-                float x = Mathf.Pow(m_Gaps[i].transform.position.x - m_Bird.transform.position.x, 2);
-                float y = Mathf.Pow(m_Gaps[i].transform.position.y - m_Bird.transform.position.y, 2);
-
-                if (x <= 0.25f && y <= (m_Gaps[i].Height / 4))
+                if(result == -1)
                 {
-                    //Debug.Log("Score - Gap[" + i + "]");
-                    //m_Score++;
-                    //m_ScoreText.text = m_Score.ToString();
+                    Debug.Log("death");
+                    m_Bird.Hit(result);
                     break;
                 }
             }
@@ -133,7 +99,7 @@ public class GameController : MonoBehaviour
             if (distance <= 1.5f)
             {
                 Debug.Log("Drop death");
-                m_Bird.Hit(2);
+                m_Bird.Hit(-2);
                 //yield return new WaitForSeconds(0.3f);
             }
 

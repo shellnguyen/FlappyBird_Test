@@ -463,8 +463,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b2a687a94e9af4fb5ec5ce47681f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainCamera: {fileID: 963194227}
   m_ScreenBounds: {x: 0, y: 0}
+  m_YFloorSize: 0
+  m_Animator: {fileID: 0}
+  m_HitTypeParamId: 0
   m_Renderer: {fileID: 0}
   m_Position: {x: 0, y: 0, z: 0}
   m_IsAlive: 0
@@ -1016,7 +1018,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0377680229910ff40a97abecbefae432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_GameSetting: {fileID: 0}
   m_MainCamera: {fileID: 963194227}
+  m_ScreenBounds: {x: 0, y: 0}
   m_IsStart: 1
   m_Bird: {fileID: 692523491}
   m_ScreenWidth: 0
@@ -1028,8 +1032,9 @@ MonoBehaviour:
   m_GapPrefab: {fileID: 2042229465124150638, guid: 93ee14fc4f822ed40ae4729644cf89d2,
     type: 3}
   m_SpawnPoint: {fileID: 353105382}
-  m_TopEdgeY: 5
-  m_BottomEdgeY: -5
+  m_Sections: []
+  m_SectionPrefab: {fileID: 1097753832622170418, guid: f7c51b6649bdc4e419546369d77d65a6,
+    type: 3}
   m_Time: 0
   m_Floor: {fileID: 2065776236}
   m_ScoreText: {fileID: 0}
