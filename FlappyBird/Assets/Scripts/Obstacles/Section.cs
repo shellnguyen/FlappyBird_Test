@@ -77,9 +77,10 @@ public class Section : MonoBehaviour, IObjectPool
         float x = Mathf.Pow(m_Gap.transform.position.x - bird.position.x, 2);
         float y = Mathf.Pow(m_Gap.transform.position.y - bird.position.y, 2);
 
-        if (x <= 0.25f && y <= (m_Gap.Height / 4))
+        if (x <= 0.25f && y <= (m_Gap.Height / 4) && !m_Gap.IsHitRecently)
         {
             Debug.Log("Pass gap");
+            m_Gap.IsHitRecently = true;
             return 1;
         }
         //
@@ -94,6 +95,7 @@ public class Section : MonoBehaviour, IObjectPool
         if (transform.position.x < -(GameSetting.Instance.screenBounds.x + 1.0f))
         {
             //Debug.Log("Move out of screen");
+            m_Gap.IsHitRecently = false;
             gameObject.SetActive(false);
         }
     }
