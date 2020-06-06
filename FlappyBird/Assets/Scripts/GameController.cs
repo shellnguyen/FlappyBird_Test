@@ -102,7 +102,8 @@ public class GameController : MonoBehaviour
                 int result = m_Sections[i].IsCollide(m_Bird.transform);
                 if(result == 1)
                 {
-                    Debug.Log("score !!!");
+                    m_Score++;
+                    Utilities.Instance.DispatchEvent(Shell.Event.OnUpdateScore, "score", m_Score);
                     break;
                 }
 

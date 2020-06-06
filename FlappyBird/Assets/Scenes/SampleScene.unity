@@ -740,8 +740,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 80
-  m_PreferredHeight: 80
+  m_PreferredWidth: 100
+  m_PreferredHeight: 100
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1022,8 +1022,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 80
-  m_PreferredHeight: 80
+  m_PreferredWidth: 100
+  m_PreferredHeight: 100
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1177,6 +1177,7 @@ GameObject:
   - component: {fileID: 2131575194}
   - component: {fileID: 2131575193}
   - component: {fileID: 2131575192}
+  - component: {fileID: 2131575195}
   m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
@@ -1266,3 +1267,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2131575190}
   m_CullTransparentMesh: 0
+--- !u!114 &2131575195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131575190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a636d6da3ac3e68428bdc3f5891d5b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ResourceManager: {fileID: 0}
+  m_TenImage: {fileID: 1271632940}
+  m_UnitImage: {fileID: 1524582131}
