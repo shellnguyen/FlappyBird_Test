@@ -5,7 +5,8 @@ namespace Shell
     public enum Event
     {
         OnUpdateScore,
-        ShowPopup
+        ShowPopup,
+        OnNewGame
     }
 }
 
