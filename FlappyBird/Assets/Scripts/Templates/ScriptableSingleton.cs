@@ -27,15 +27,15 @@ public abstract class ScriptableSingleton<T> : ScriptableObject where T : Script
                 _instance = instances.FirstOrDefault();
                 if (_instance == null)
                 {
-                    Logger.Instance.PrintError(Common.DEBUG_TAG, "[ScriptableSingleton] No instance found!");
+                    Debug.Log("[ScriptableSingleton] No instance found!");
                 }
                 else if (instances.Length > 1)
                 {
-                    Logger.Instance.PrintError(Common.DEBUG_TAG, "[ScriptableSingleton] Multiple instances found!");
+                    Debug.Log("[ScriptableSingleton] Multiple instances found!");
                 }
                 else
                 {
-                    Logger.Instance.PrintError(Common.DEBUG_TAG, "[ScriptableSingleton] An instance was found!");
+                    Debug.Log("[ScriptableSingleton] An instance was found!");
                 }
 #endif
             }
