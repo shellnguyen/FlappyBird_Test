@@ -5,7 +5,6 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     [SerializeField] protected float m_Height;
-    [SerializeField] public bool IsHitRecently;
 
     public float Height
     {
