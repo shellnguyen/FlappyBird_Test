@@ -15,7 +15,7 @@ public class NewGameMenu : MonoBehaviour
 
     private void OnNewGame()
     {
-        Utilities.Instance.DispatchEvent(Shell.Event.OnNewGame, "new_game", 0);
+        Utilities.Instance.DispatchEvent(Shell.Event.OnNewGame, "new_game", false);
         this.gameObject.SetActive(false);
     }
 }

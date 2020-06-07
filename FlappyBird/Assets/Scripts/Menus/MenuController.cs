@@ -7,7 +7,7 @@ public class MenuController : MonoBehaviour
     //[SerializeField] private
     [SerializeField] private GameObject m_ScorePanel;
     [SerializeField] private GameObject m_TutorialPanel;
-    [SerializeField] private GameObject m_GameOverPanel;
+    [SerializeField] private GameOverMenu m_GameOverPanel;
 
     private void OnEnable()
     {
@@ -42,6 +42,10 @@ public class MenuController : MonoBehaviour
 
     private void OnGameOver(EventParam param)
     {
+        int score = param.GetInt("game_over");
+
         m_ScorePanel.SetActive(false);
+        m_GameOverPanel.gameObject.SetActive(true);
+        m_GameOverPanel.SetData(score);
     }
 }

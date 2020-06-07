@@ -4,5 +4,6 @@
 public class GameSetting : ScriptableSingleton<GameSetting>
 {
     public Vector2 screenBounds;
+    public int highScore;
     public bool enableAudio;
 }

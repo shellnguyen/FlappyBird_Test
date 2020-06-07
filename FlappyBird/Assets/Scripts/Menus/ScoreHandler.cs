@@ -11,6 +11,7 @@ public class ScoreHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        m_ResourceManager = ResourcesManager.Instance;
         EventManager.Instance.Register(Shell.Event.OnUpdateScore, OnScoreUpdate);
     }
 
@@ -19,17 +20,34 @@ public class ScoreHandler : MonoBehaviour
         EventManager.Instance.Unregister(Shell.Event.OnUpdateScore, OnScoreUpdate);
     }
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-        m_ResourceManager = ResourcesManager.Instance;
-    }
-
     private void OnScoreUpdate(EventParam param)
     {
-        string tag = param.GetString("tag");
         int score = param.GetInt("score");
 
+        SetScore(score);
+    }
+
+    private IEnumerator CountScore(int score)
+    {
+        int current = 0;
+        while(current <= score)
+        {
+            SetScore(current);
+            current++;
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        yield break;
+    }
+
+    public void ShowScore(int score)
+    {
+        StartCoroutine(CountScore(score));
+    }
+
+    public void SetScore(int score)
+    {
         int tens = score / 10;
         int unit = score % 10;
 

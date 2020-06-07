@@ -112,7 +112,9 @@ public class GameController : MonoBehaviour
                 if(result == -1)
                 {
                     Debug.Log("death");
+                    Utilities.Instance.DispatchEvent(Shell.Event.OnGameOver, "game_over", m_Score);
                     m_Bird.Hit(result);
+                    OnGameOver();
                     break;
                 }
             }
@@ -121,8 +123,10 @@ public class GameController : MonoBehaviour
             float distance = Mathf.Pow(m_Floor.transform.position.y - m_Bird.transform.position.y, 2);
             if (distance <= 1.5f)
             {
+                Utilities.Instance.DispatchEvent(Shell.Event.OnGameOver, "game_over", m_Score);
                 Debug.Log("Drop death");
                 m_Bird.Hit(-2);
+                OnGameOver();
                 //yield return new WaitForSeconds(0.3f);
             }
 
@@ -135,6 +139,13 @@ public class GameController : MonoBehaviour
 
     private void OnNewGame(EventParam param)
     {
+        bool isPlayAgain = param.GetBoolean("new_game");
+
+        if(isPlayAgain)
+        {
+
+        }
+
         m_IsStart = true;
         m_Score = 0;
         m_Bird.gameObject.SetActive(true);
@@ -142,5 +153,10 @@ public class GameController : MonoBehaviour
         m_TimeBlock = Time.time;
         m_TimeCloud = Time.time;
         StartCoroutine(CheckCollision());
+    }
+
+    private void OnGameOver()
+    {
+        m_IsStart = false;
     }
 }
