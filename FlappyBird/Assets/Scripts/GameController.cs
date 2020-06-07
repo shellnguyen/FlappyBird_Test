@@ -34,24 +34,26 @@ public class GameController : MonoBehaviour
     {
         m_GameSetting = GameSetting.Instance;
         PoolController.Instance.Initialize(m_SpawnPoint.transform.position);
+        EventManager.Instance.Register(Shell.Event.OnTutorialEnd, OnNewGame);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.Unregister(Shell.Event.OnTutorialEnd, OnNewGame);
     }
 
     // Start is called before the first frame update
     private void Start()
     {
-        m_IsStart = true;
-        m_Score = 0;
-        m_TimeBlock = Time.time;
-        m_TimeCloud = Time.time;
-        m_Sections = new List<Section>();
-
-
         float xHeight = m_Floor.GetComponent<SpriteRenderer>().bounds.extents.y;
 
         m_ScreenBounds = m_MainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, m_MainCamera.transform.position.z));
         m_GameSetting.screenBounds = m_ScreenBounds;
+        m_IsStart = false;
+        m_Score = 0;
+        m_Sections = new List<Section>();
+
         m_Bird.SetScreenBounds(m_ScreenBounds, xHeight);
-        StartCoroutine(CheckCollision());
     }
 
     private void FixedUpdate()
@@ -129,5 +131,16 @@ public class GameController : MonoBehaviour
 
 
         yield break;
+    }
+
+    private void OnNewGame(EventParam param)
+    {
+        m_IsStart = true;
+        m_Score = 0;
+        m_Bird.gameObject.SetActive(true);
+
+        m_TimeBlock = Time.time;
+        m_TimeCloud = Time.time;
+        StartCoroutine(CheckCollision());
     }
 }
