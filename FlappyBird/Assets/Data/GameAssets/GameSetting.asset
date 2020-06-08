@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: GameSetting
   m_EditorClassIdentifier: 
   screenBounds: {x: 0, y: 0}
+  highScore: 0
   enableAudio: 0

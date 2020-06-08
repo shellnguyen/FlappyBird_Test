@@ -84,7 +84,11 @@ public class GameController : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+#if UNITY_EDITOR
+        m_GameSetting.highScore = 0;
+    #else
         SaveSetting();
+    #endif
     }
     #endregion
 
