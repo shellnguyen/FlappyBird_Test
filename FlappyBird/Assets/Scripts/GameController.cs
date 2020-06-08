@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private int m_Score;
 
+    #region Unity functions
     private void OnEnable()
     {
         m_GameSetting = GameSetting.Instance;
@@ -54,7 +55,7 @@ public class GameController : MonoBehaviour
         m_Bird.SetScreenBounds(m_ScreenBounds, xHeight);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!m_IsStart)
         {
@@ -71,6 +72,12 @@ public class GameController : MonoBehaviour
             SpawnClound();
         }
     }
+
+    private void OnApplicationQuit()
+    {
+        
+    }
+    #endregion
 
     private void SpawnBlock()
     {
@@ -96,7 +103,7 @@ public class GameController : MonoBehaviour
             //Check collide with anything in section
             for(int i = 0; i < m_Sections.Count; ++i)
             {
-                if(!m_Sections[i].enabled)
+                if(!m_Sections[i].gameObject.activeSelf)
                 {
                     continue;
                 }
@@ -121,9 +128,6 @@ public class GameController : MonoBehaviour
 
             //Check Floor
             float distance = Mathf.Pow(m_Floor.transform.position.y - m_Bird.transform.position.y, 2);
-            Debug.Log("m_Floor.y = " + m_Floor.transform.position.y);
-            Debug.Log("bird.y = " + m_Bird.transform.position.y);
-            Debug.Log("distance to Floor = " + distance);
             if (distance <= 1.5f)
             {
                 Debug.Log("Drop death");
@@ -168,10 +172,12 @@ public class GameController : MonoBehaviour
         m_Bird.OnReset();
         for(int i = 0; i < m_Sections.Count; ++i)
         {
-            if(m_Sections[i].enabled)
+            if(m_Sections[i].gameObject.activeSelf)
             {
                 m_Sections[i].gameObject.SetActive(false);
             }
         }
     }
+
+    
 }
