@@ -43,12 +43,8 @@ public class BirdController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (!m_IsAlive)
-        {
-            return;
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && m_IsAlive)
         {
             Utilities.Instance.DispatchEvent(Shell.Event.PlayAudio, "play_one", 1);
             m_Acceleration = 0.0f;
