@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using TMPro;
 
 public class GameController : MonoBehaviour
 {
+    private string SAVE_PATH;
     private const float BLOCK_YOFFSET = 0.5f;
     private const float BIRD_YOFFSET = 0.4f;
 
@@ -29,9 +32,15 @@ public class GameController : MonoBehaviour
     [SerializeField] private int m_Score;
 
     #region Unity functions
-    private void OnEnable()
+    private void Awake()
     {
         m_GameSetting = GameSetting.Instance;
+        SAVE_PATH = Application.persistentDataPath + "/player.sav";
+        LoadSetting();
+    }
+
+    private void OnEnable()
+    {
         PoolController.Instance.Initialize(m_SpawnPoint.transform.position);
         EventManager.Instance.Register(Shell.Event.OnNewGame, OnNewGame);
     }
@@ -75,7 +84,7 @@ public class GameController : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        
+        SaveSetting();
     }
     #endregion
 
@@ -179,5 +188,62 @@ public class GameController : MonoBehaviour
         }
     }
 
-    
+    private bool SaveSetting()
+    {
+        FileStream fs = new FileStream(SAVE_PATH, FileMode.Create);
+
+        // Construct a BinaryFormatter and use it to serialize the data to the stream.
+        BinaryFormatter formatter = new BinaryFormatter();
+        try
+        {
+            SettingData data = new SettingData();
+            data.enableAudio = m_GameSetting.enableAudio;
+            data.highScore = m_GameSetting.highScore;
+            formatter.Serialize(fs, data);
+        }
+        catch (SerializationException e)
+        {
+            Debug.Log("Failed to serialize. Reason: " + e.Message);
+            return false;
+        }
+        finally
+        {
+            fs.Close();
+        }
+
+        return true;
+    }
+
+    private bool LoadSetting()
+    {
+        if (File.Exists(SAVE_PATH))
+        {
+            FileStream fs = new FileStream(SAVE_PATH, FileMode.Open);
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                SettingData data = (SettingData)formatter.Deserialize(fs);
+
+                m_GameSetting.enableAudio = data.enableAudio;
+                m_GameSetting.highScore = data.highScore;
+            }
+            catch (SerializationException e)
+            {
+                Debug.Log("Failed to deserialize. Reason: " + e.Message);
+                return false;
+            }
+            finally
+            {
+                fs.Close();
+            }
+        }
+        else
+        {
+            Debug.Log("File not found !!!");
+            return false;
+        }
+
+        return true;
+    }
 }
