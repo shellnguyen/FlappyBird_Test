@@ -20,7 +20,7 @@ public class Section : MonoBehaviour, IObjectPool
     private void Start()
     {
         float topHeight = Random.Range(1, 6) * 2;
-        float gapHeight = Random.Range(2, 5) * 2;
+        float gapHeight = Random.Range(3, 4) * 2;
         float bottomHeight = 20.0f - topHeight - gapHeight;
 
         //Spawn Top
