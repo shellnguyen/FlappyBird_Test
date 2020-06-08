@@ -75,16 +75,6 @@ public class BirdController : MonoBehaviour
         transform.position = m_Position;
     }
 
-    private void LateUpdate()
-    {
-        if(!m_IsAlive)
-        {
-            return;
-        }
-
-
-    }
-
     public void SetScreenBounds(Vector2 bounds, float yFloorSize)
     {
         m_ScreenBounds = bounds;
@@ -100,6 +90,11 @@ public class BirdController : MonoBehaviour
     public void OnReset()
     {
         transform.position = m_OriginalPosition;
+        m_Position = m_OriginalPosition;
+        m_PositionY = m_OriginalPosition.y;
+        m_Acceleration = 0.0f;
+        m_Velocity = 0.0f;
+
         m_Animator.SetInteger(m_HitTypeParamId, 0);
         m_IsAlive = true;
     }
