@@ -9,7 +9,7 @@ public class TutorialMenu : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
         {
-            Utilities.Instance.DispatchEvent(Shell.Event.OnTutorialEnd, "tutorial_end", 0);
+            Utilities.Instance.DispatchEvent(Shell.Event.OnNewGame, "new_game", false);
             gameObject.SetActive(false);
         }
     }

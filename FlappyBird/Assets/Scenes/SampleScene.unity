@@ -1020,9 +1020,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f71f1a9e016afb46b20f0d4243a15f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ScorePanel: {fileID: 2131575190}
+  m_ScorePanel: {fileID: 2131575195}
   m_TutorialPanel: {fileID: 1516028256}
-  m_GameOverPanel: {fileID: 0}
+  m_GameOverPanel: {fileID: 1704551824}
 --- !u!1 &692523487
 GameObject:
   m_ObjectHideFlags: 0
@@ -1137,6 +1137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b2a687a94e9af4fb5ec5ce47681f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_OriginalPosition: {x: 0, y: 0, z: 0}
   m_ScreenBounds: {x: 0, y: 0}
   m_YFloorSize: 0
   m_Animator: {fileID: 0}

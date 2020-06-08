@@ -34,12 +34,12 @@ public class GameController : MonoBehaviour
     {
         m_GameSetting = GameSetting.Instance;
         PoolController.Instance.Initialize(m_SpawnPoint.transform.position);
-        EventManager.Instance.Register(Shell.Event.OnTutorialEnd, OnNewGame);
+        EventManager.Instance.Register(Shell.Event.OnNewGame, OnNewGame);
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.Unregister(Shell.Event.OnTutorialEnd, OnNewGame);
+        EventManager.Instance.Unregister(Shell.Event.OnNewGame, OnNewGame);
     }
 
     // Start is called before the first frame update
@@ -112,7 +112,6 @@ public class GameController : MonoBehaviour
                 if(result == -1)
                 {
                     Debug.Log("death");
-                    Utilities.Instance.DispatchEvent(Shell.Event.OnGameOver, "game_over", m_Score);
                     m_Bird.Hit(result);
                     OnGameOver();
                     break;
@@ -123,7 +122,6 @@ public class GameController : MonoBehaviour
             float distance = Mathf.Pow(m_Floor.transform.position.y - m_Bird.transform.position.y, 2);
             if (distance <= 1.5f)
             {
-                Utilities.Instance.DispatchEvent(Shell.Event.OnGameOver, "game_over", m_Score);
                 Debug.Log("Drop death");
                 m_Bird.Hit(-2);
                 OnGameOver();
@@ -143,7 +141,7 @@ public class GameController : MonoBehaviour
 
         if(isPlayAgain)
         {
-
+            OnReset();
         }
 
         m_IsStart = true;
@@ -158,5 +156,11 @@ public class GameController : MonoBehaviour
     private void OnGameOver()
     {
         m_IsStart = false;
+        Utilities.Instance.DispatchEvent(Shell.Event.ShowPopup, "game_over", m_Score);
+    }
+
+    private void OnReset()
+    {
+        m_Bird.OnReset();
     }
 }

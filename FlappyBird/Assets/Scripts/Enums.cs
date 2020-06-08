@@ -6,9 +6,7 @@ namespace Shell
     {
         OnUpdateScore,
         ShowPopup,
-        OnNewGame,
-        OnTutorialEnd,
-        OnGameOver
+        OnNewGame
     }
 }
 

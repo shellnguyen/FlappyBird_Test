@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BirdController : MonoBehaviour
 {
+    [SerializeField] private Vector3 m_OriginalPosition;
     [SerializeField] private Vector2 m_ScreenBounds;
     [SerializeField] private float m_YFloorSize;
 
@@ -34,6 +35,7 @@ public class BirdController : MonoBehaviour
         m_Width = m_Renderer.bounds.extents.x;
         m_Height = m_Renderer.bounds.extents.y;
 
+        m_OriginalPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         m_Position = transform.position;
         m_PositionY = transform.position.y;
     }
@@ -80,5 +82,12 @@ public class BirdController : MonoBehaviour
     {
         m_IsAlive = false;
         m_Animator.SetInteger(m_HitTypeParamId, hitType);
+    }
+
+    public void OnReset()
+    {
+        transform.position = m_OriginalPosition;
+        m_IsAlive = true;
+        m_Animator.SetInteger(m_HitTypeParamId, 0);
     }
 }

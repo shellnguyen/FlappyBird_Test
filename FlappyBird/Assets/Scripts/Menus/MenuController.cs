@@ -5,20 +5,20 @@ using UnityEngine;
 public class MenuController : MonoBehaviour
 {
     //[SerializeField] private
-    [SerializeField] private GameObject m_ScorePanel;
+    [SerializeField] private ScoreHandler m_ScorePanel;
     [SerializeField] private GameObject m_TutorialPanel;
     [SerializeField] private GameOverMenu m_GameOverPanel;
 
     private void OnEnable()
     {
+        EventManager.Instance.Register(Shell.Event.ShowPopup, ShowPopup);
         EventManager.Instance.Register(Shell.Event.OnNewGame, OnNewGame);
-        EventManager.Instance.Register(Shell.Event.OnGameOver, OnGameOver);
     }
 
     private void OnDisable()
     {
+        EventManager.Instance.Unregister(Shell.Event.ShowPopup, ShowPopup);
         EventManager.Instance.Unregister(Shell.Event.OnNewGame, OnNewGame);
-        EventManager.Instance.Unregister(Shell.Event.OnGameOver, OnGameOver);
     }
 
     // Start is called before the first frame update
@@ -33,19 +33,37 @@ public class MenuController : MonoBehaviour
         
     }
 
-    private void OnNewGame(EventParam param)
+    private void ShowPopup(EventParam param)
     {
-        //Start the tutorial screen
-        m_ScorePanel.SetActive(true);
-        m_TutorialPanel.SetActive(true);
+        string tag = param.GetString("tag");
+
+        switch(tag)
+        {
+            case "game_over":
+                {
+                    int score = param.GetInt(tag);
+                    OnGameOver(score);
+                    break;
+                }
+            case "tutorial":
+                {
+                    m_ScorePanel.gameObject.SetActive(true);
+                    m_TutorialPanel.SetActive(true);
+                    break;
+                }
+        }
     }
 
-    private void OnGameOver(EventParam param)
+    private void OnGameOver(int score)
     {
-        int score = param.GetInt("game_over");
-
-        m_ScorePanel.SetActive(false);
+        m_ScorePanel.gameObject.SetActive(false);
         m_GameOverPanel.gameObject.SetActive(true);
         m_GameOverPanel.SetData(score);
+    }
+
+    private void OnNewGame(EventParam param)
+    {
+        m_ScorePanel.gameObject.SetActive(true);
+        m_ScorePanel.SetScore(0);
     }
 }
