@@ -21,13 +21,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private List<Section> m_Sections;
     [SerializeField] private GameObject m_SectionPrefab;
 
-    //[SerializeField] private Li
     [SerializeField] private float m_TimeBlock;
     [SerializeField] private float m_TimeCloud;
 
     [SerializeField] private GameObject m_Floor;
 
-    [SerializeField] private TextMeshProUGUI m_ScoreText;
     [SerializeField] private int m_Score;
 
     private void OnEnable()
@@ -63,7 +61,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        if (m_Sections.Count < 15 && (Time.time - m_TimeBlock) > 8.0f)
+        if ((Time.time - m_TimeBlock) > 8.0f)
         {
             SpawnBlock();
         }
@@ -76,9 +74,11 @@ public class GameController : MonoBehaviour
 
     private void SpawnBlock()
     {
-        //GameObject section = Instantiate(m_SectionPrefab, m_SpawnPoint.transform.position, Quaternion.identity);
-        //m_Sections.Add(section.GetComponent<Section>());
-        m_Sections.Add(PoolController.Instance.Get("section", m_SpawnPoint.transform.position, Quaternion.identity).GetComponent<Section>());
+        if(m_Sections.Count <= 20)
+        {
+            m_Sections.Add(PoolController.Instance.Get("section", m_SpawnPoint.transform.position, Quaternion.identity).GetComponent<Section>());
+        }
+        
         m_TimeBlock = Time.time;
     }
 
@@ -105,6 +105,7 @@ public class GameController : MonoBehaviour
                 if(result == 1)
                 {
                     m_Score++;
+                    Utilities.Instance.DispatchEvent(Shell.Event.PlayAudio, "play_one", 3);
                     Utilities.Instance.DispatchEvent(Shell.Event.OnUpdateScore, "score", m_Score);
                     break;
                 }
@@ -120,12 +121,14 @@ public class GameController : MonoBehaviour
 
             //Check Floor
             float distance = Mathf.Pow(m_Floor.transform.position.y - m_Bird.transform.position.y, 2);
+            Debug.Log("m_Floor.y = " + m_Floor.transform.position.y);
+            Debug.Log("bird.y = " + m_Bird.transform.position.y);
+            Debug.Log("distance to Floor = " + distance);
             if (distance <= 1.5f)
             {
                 Debug.Log("Drop death");
                 m_Bird.Hit(-2);
                 OnGameOver();
-                //yield return new WaitForSeconds(0.3f);
             }
 
             yield return new WaitForSeconds(0.3f);
@@ -156,11 +159,19 @@ public class GameController : MonoBehaviour
     private void OnGameOver()
     {
         m_IsStart = false;
+        Utilities.Instance.DispatchEvent(Shell.Event.PlayAudio, "play_one", 2);
         Utilities.Instance.DispatchEvent(Shell.Event.ShowPopup, "game_over", m_Score);
     }
 
     private void OnReset()
     {
         m_Bird.OnReset();
+        for(int i = 0; i < m_Sections.Count; ++i)
+        {
+            if(m_Sections[i].enabled)
+            {
+                m_Sections[i].gameObject.SetActive(false);
+            }
+        }
     }
 }

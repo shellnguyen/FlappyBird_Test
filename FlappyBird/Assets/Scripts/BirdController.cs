@@ -43,33 +43,46 @@ public class BirdController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    m_Acceleration = 0.0f;
-        //    m_Velocity = m_Gravity / 4.0f;
-        //}
-        //else
-        //{
-        //    m_Acceleration -= m_Gravity * Time.deltaTime;
-        //}
+        if (!m_IsAlive)
+        {
+            return;
+        }
 
-        //if (m_Acceleration >= m_Gravity)
-        //{
-        //    m_Acceleration = m_Gravity;
-        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Utilities.Instance.DispatchEvent(Shell.Event.PlayAudio, "play_one", 1);
+            m_Acceleration = 0.0f;
+            m_Velocity = m_Gravity / 4.0f;
+        }
+        else
+        {
+            m_Acceleration -= m_Gravity * Time.deltaTime;
+        }
 
-        //m_Velocity += m_Acceleration * Time.deltaTime;
-        //m_PositionY += m_Velocity * Time.deltaTime;
+        if (m_Acceleration >= m_Gravity)
+        {
+            m_Acceleration = m_Gravity;
+        }
 
-        //m_Position.y = m_PositionY;
+        m_Velocity += m_Acceleration * Time.deltaTime;
+        m_PositionY += m_Velocity * Time.deltaTime;
+
+        m_Position.y = m_PositionY;
         //transform.position = m_Position;
+
+        m_Position.x = Mathf.Clamp(m_Position.x, m_ScreenBounds.x * -1 + m_Width, m_ScreenBounds.x - m_Width);
+        m_Position.y = Mathf.Clamp(m_Position.y, m_ScreenBounds.y * -1 + m_Height + m_YFloorSize, m_ScreenBounds.y - m_Height);
+        transform.position = m_Position;
     }
 
     private void LateUpdate()
     {
-        //m_Position.x = Mathf.Clamp(m_Position.x, m_ScreenBounds.x * -1 + m_Width, m_ScreenBounds.x - m_Width);
-        //m_Position.y = Mathf.Clamp(m_Position.y, m_ScreenBounds.y * -1 + m_Height + m_YFloorSize, m_ScreenBounds.y - m_Height);
-        //transform.position = m_Position;
+        if(!m_IsAlive)
+        {
+            return;
+        }
+
+
     }
 
     public void SetScreenBounds(Vector2 bounds, float yFloorSize)
@@ -87,7 +100,7 @@ public class BirdController : MonoBehaviour
     public void OnReset()
     {
         transform.position = m_OriginalPosition;
-        m_IsAlive = true;
         m_Animator.SetInteger(m_HitTypeParamId, 0);
+        m_IsAlive = true;
     }
 }

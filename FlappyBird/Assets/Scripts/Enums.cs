@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace Shell
+﻿namespace Shell
 {
     public enum Event
     {
         OnUpdateScore,
         ShowPopup,
-        OnNewGame
+        OnNewGame,
+        PlayAudio
     }
 }
 

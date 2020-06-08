@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class NewGameMenu : MonoBehaviour
@@ -15,6 +13,7 @@ public class NewGameMenu : MonoBehaviour
 
     private void OnNewGame()
     {
+        Utilities.Instance.DispatchEvent(Shell.Event.PlayAudio, "play_one", 0);
         Utilities.Instance.DispatchEvent(Shell.Event.ShowPopup, "tutorial", false);
         this.gameObject.SetActive(false);
     }

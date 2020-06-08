@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4475e8871ee7a41bbca1262224e3b6, type: 3}
   m_Name: ResourcesManager
   m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: 21b1fdaa2246e1b4d9d1e6e6f0184c17, type: 3}
+  - {fileID: 8300000, guid: 1ebf27cc91e33fe47b57aafd9fa29147, type: 3}
+  - {fileID: 8300000, guid: 920490678ce03c24b926235795ffc2b7, type: 3}
+  - {fileID: 8300000, guid: 3358379f1db3c3a4483db7849e723640, type: 3}
   scores:
   - {fileID: 40486954147837177, guid: 47a0c7f6050ce416e88f1a9ca11ebe37, type: 3}
   - {fileID: 4983908090066003394, guid: 47a0c7f6050ce416e88f1a9ca11ebe37, type: 3}
